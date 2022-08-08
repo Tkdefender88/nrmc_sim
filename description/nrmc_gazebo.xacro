@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="nrmc_robot">
+
+    <gazebo reference="arm">
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <gazebo reference="bucket">
+        <material>Gazebo/Blue</material>
+    </gazebo>
+
+</robot>

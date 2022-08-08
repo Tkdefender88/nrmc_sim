@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="nrmc_robot">
+
+    <xacro:include filename="base_include.xacro" />
+
+    <link name="world"></link>
+
+    <link name="right_tread">
+        <visual>
+            <geometry>
+                <box size="1.0 0.1 0.2"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <geometry>
+                 <box size="1.0 0.1 0.2"/>
+            </geometry>  
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+        <xacro:inertial_box mass="1" x="1.0" y="0.1" z="0.2">
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <link name="left_tread">
+        <visual>
+            <geometry>
+                <box size="1.0 0.1 0.2"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <geometry>
+                 <box size="1.0 0.1 0.2"/>
+            </geometry>  
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+        <xacro:inertial_box mass="1" x="1.0" y="0.1" z="0.2">
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <link name="left_arm_ligature">
+        <visual>
+            <geometry>
+                <box size="0.25 0.05 0.1"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <geometry>
+                 <box size="0.25 0.05 0.1"/>
+            </geometry>  
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+        <xacro:inertial_box mass="1" x="0.25" y="0.05" z="0.1">
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <link name="right_arm_ligature">
+        <visual>
+            <geometry>
+                <box size="0.25 0.05 0.1"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <geometry>
+                 <box size="0.25 0.05 0.1"/>
+            </geometry>  
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+        <xacro:inertial_box mass="1" x="0.25" y="0.05" z="0.1">
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <link name="arm">
+        <visual>
+            <origin xyz="0.2 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6 0.2 0.1"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <origin xyz="0.2 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6 0.2 0.1"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="0.5" x="0.6" y="0.2" z="0.1">
+            <origin xyz="0.2 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <link name="bucket">
+        <visual>
+            <origin xyz="0.15 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.3 0.3 0.01"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.3 0.3 0.01"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="0.1" x="0.3" y="0.3" z="0.01">
+            <origin xyz="0.15 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <joint name="right_arm_ligature_to_arm" type="revolute">
+        <parent link="right_arm_ligature"/>
+        <child link="arm"/>
+        <origin rpy="0 0 0" xyz="0.10 -0.175 0"/> 
+        <axis xyz="0 1 0"/>
+        <limit lower="${-pi/3}" upper="${pi}" effort="100" velocity="100"/>
+    </joint>
+
+    <joint name="right_tread_to_right_arm_ligature" type="fixed">
+        <parent link="right_tread"/>
+        <child link="right_arm_ligature"/>
+        <origin rpy="0 -1.57 0" xyz="0.4 -0.075 0.15"/>
+    </joint>
+
+    <joint name="left_tread_to_left_arm_ligature" type="fixed">
+        <parent link="left_tread"/>
+        <child link="left_arm_ligature"/>
+        <origin rpy="0 -1.57 0" xyz="0.4 0.075 0.15"/>
+    </joint>
+
+    <joint name="arm_to_bucket" type="revolute">
+        <parent link="arm" />
+        <child link="bucket" />
+        <origin rpy="0 0 0" xyz="0.5 0 -0.05"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="${pi/6}" upper="${pi}" velocity="100" effort="100"/>
+    </joint>
+
+    <joint name="world_to_left_tread" type="fixed">
+        <parent link="world" />
+        <child link="left_tread"/>
+        <origin rpy="0 0 0" xyz="0 -0.25 0.1"/>
+    </joint>
+
+    <joint name="world_to_right_tread" type="fixed">
+        <parent link="world" />
+        <child link="right_tread"/>
+        <origin rpy="0 0 0" xyz="0 0.25 0.1"/>
+    </joint>
+
+    <xacro:include filename="nrmc_gazebo.xacro"/>
+
+</robot>
